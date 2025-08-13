@@ -6,3 +6,5 @@ The application can not be ran without adding the checkpoints to the models in t
 The checkpoints can be found here:
 https://huggingface.co/dragostom24/CodeT5_FT
 https://huggingface.co/dragostom24/Deepseek_FT
+
+University of Groningen - Dragos Tomoiaga S5159202
