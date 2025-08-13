@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Code Summarizer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    #loading {
+      display: none;
+      font-weight: bold;
+      color: #007bff;
+      margin-top: 10px;
+    }
+    #output {
+      white-space: pre-wrap;
+      background: #f4f4f4;
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      max-width: 900px;
+    }
+    textarea {
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>Code Summarizer</h1>
+
+  <label for="model">Choose model:</label>
+  <select id="model">
+    <option value="codet5">CodeT5 (fine-tuned)</option>
+    <option value="codet5_base">CodeT5 (base)</option>
+    <option value="deepseek">DeepSeek (fine-tuned)</option>
+    <option value="deepseek_base">DeepSeek (base)</option>
+  </select>
+
+  <br><br>
+
+  <textarea id="code" rows="12" cols="100" placeholder="Paste your code here..."></textarea>
+  <br><br>
+  <button onclick="summarize()">Summarize</button>
+
+  <div id="loading">Loading...</div>
+
+  <h2>Summary:</h2>
+  <pre id="output"></pre>
+
+  <script>
+    async function summarize() {
+      const code = document.getElementById("code").value;
+      const model = document.getElementById("model").value;
+      const loading = document.getElementById("loading");
+      const output = document.getElementById("output");
+
+      // Show loading first
+      loading.style.display = "block";
+
+      try {
+        const response = await fetch("/summarize", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ code: code, model: model })
+        });
+
+        const data = await response.json();
+        output.innerText = data.summary;
+      } catch (error) {
+        output.innerText = "Error summarizing code.";
+        console.error(error);
+      } finally {
+        loading.style.display = "none";
+      }
+    }
+  </script>
+</body>
+</html>
